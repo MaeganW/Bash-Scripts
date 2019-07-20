@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# save the audio file full name and extension
+musicfile=`youtube-dl -f 251 --get-filename -o "%(title)s.%(ext)s" $*`
+
+# save the audio file name
+song="${musicfile%.*}"
+
+echo $musicfile
+echo $song
+
+# make the audio file - in this case format 251 .opus
+youtube-dl -f 251 $*
+
+# convert the audio file to mp4
+ffmpeg -i "$HOME/Music/$song.opus" "$HOME/Music/$song.mp4"
+
+# add new music file to iTunes
+cp "$HOME/Music/$song.mp4" ~/"Music/iTunes/iTunes Media/Automatically Add to iTunes.localized/"
+
+# remove the old song file
+rm "$HOME/Music/$song.opus"
+
